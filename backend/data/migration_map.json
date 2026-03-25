@@ -1,0 +1,158 @@
+{
+  "mappings": [
+    {
+      "classical": "RSA-1024",
+      "category": "key_exchange",
+      "severity": "CRITICAL",
+      "quantum_threat": "Shor's Algorithm",
+      "pqc_replacement": "ML-KEM-512 (Kyber-512)",
+      "hybrid_option": "RSA-3072 + ML-KEM-768",
+      "effort": "HIGH",
+      "nist_level": 1,
+      "timeline": "Migrate immediately"
+    },
+    {
+      "classical": "RSA-2048",
+      "category": "key_exchange",
+      "severity": "HIGH",
+      "quantum_threat": "Shor's Algorithm",
+      "pqc_replacement": "ML-KEM-768 (Kyber-768)",
+      "hybrid_option": "RSA-3072 + ML-KEM-768",
+      "effort": "HIGH",
+      "nist_level": 3,
+      "timeline": "Migrate within 1-2 years"
+    },
+    {
+      "classical": "RSA-2048",
+      "category": "signing",
+      "severity": "HIGH",
+      "quantum_threat": "Shor's Algorithm",
+      "pqc_replacement": "ML-DSA-65 (Dilithium-65)",
+      "hybrid_option": "RSA-3072 + ML-DSA-65",
+      "effort": "HIGH",
+      "nist_level": 3,
+      "timeline": "Migrate within 1-2 years"
+    },
+    {
+      "classical": "RSA-4096",
+      "category": "key_exchange",
+      "severity": "HIGH",
+      "quantum_threat": "Shor's Algorithm",
+      "pqc_replacement": "ML-KEM-1024 (Kyber-1024)",
+      "hybrid_option": "RSA-4096 + ML-KEM-1024",
+      "effort": "MEDIUM",
+      "nist_level": 5,
+      "timeline": "Migrate within 2-3 years"
+    },
+    {
+      "classical": "ECDSA-256",
+      "category": "signing",
+      "severity": "HIGH",
+      "quantum_threat": "Shor's Algorithm",
+      "pqc_replacement": "ML-DSA-44 (Dilithium-44)",
+      "hybrid_option": "ECDSA-384 + ML-DSA-44",
+      "effort": "MEDIUM",
+      "nist_level": 2,
+      "timeline": "Migrate within 1-2 years"
+    },
+    {
+      "classical": "ECDH-256",
+      "category": "key_exchange",
+      "severity": "HIGH",
+      "quantum_threat": "Shor's Algorithm",
+      "pqc_replacement": "ML-KEM-512 (Kyber-512)",
+      "hybrid_option": "ECDH-384 + ML-KEM-768",
+      "effort": "MEDIUM",
+      "nist_level": 1,
+      "timeline": "Migrate within 1-2 years"
+    },
+    {
+      "classical": "ECC",
+      "category": "key_exchange",
+      "severity": "HIGH",
+      "quantum_threat": "Shor's Algorithm",
+      "pqc_replacement": "ML-KEM-768 (Kyber-768)",
+      "hybrid_option": "ECDH-384 + ML-KEM-768",
+      "effort": "MEDIUM",
+      "nist_level": 3,
+      "timeline": "Migrate within 1-2 years"
+    },
+    {
+      "classical": "AES-128",
+      "category": "symmetric",
+      "severity": "MEDIUM",
+      "quantum_threat": "Grover's Algorithm (halves security to 64-bit)",
+      "pqc_replacement": "AES-256",
+      "hybrid_option": "AES-256",
+      "effort": "LOW",
+      "nist_level": null,
+      "timeline": "Upgrade key size"
+    },
+    {
+      "classical": "AES-256",
+      "category": "symmetric",
+      "severity": "LOW",
+      "quantum_threat": "Grover's Algorithm (reduces to 128-bit, still safe)",
+      "pqc_replacement": "AES-256 (already quantum-resistant)",
+      "hybrid_option": null,
+      "effort": "NONE",
+      "nist_level": null,
+      "timeline": "No action needed"
+    },
+    {
+      "classical": "SHA-1",
+      "category": "hash",
+      "severity": "CRITICAL",
+      "quantum_threat": "Classical collision attacks + Grover acceleration",
+      "pqc_replacement": "SHA-3-256 or SHA-384",
+      "hybrid_option": null,
+      "effort": "LOW",
+      "nist_level": null,
+      "timeline": "Migrate immediately"
+    },
+    {
+      "classical": "MD5",
+      "category": "hash",
+      "severity": "CRITICAL",
+      "quantum_threat": "Classical collision attacks + Grover acceleration",
+      "pqc_replacement": "SHA-3-256",
+      "hybrid_option": null,
+      "effort": "LOW",
+      "nist_level": null,
+      "timeline": "Migrate immediately"
+    },
+    {
+      "classical": "SHA-256",
+      "category": "hash",
+      "severity": "LOW",
+      "quantum_threat": "Grover's Algorithm (reduces collision resistance)",
+      "pqc_replacement": "SHA-384 or SHA-3-256",
+      "hybrid_option": null,
+      "effort": "LOW",
+      "nist_level": null,
+      "timeline": "Consider upgrade for long-term security"
+    },
+    {
+      "classical": "DES",
+      "category": "symmetric",
+      "severity": "CRITICAL",
+      "quantum_threat": "Brute force (classical) + Grover acceleration",
+      "pqc_replacement": "AES-256",
+      "hybrid_option": null,
+      "effort": "MEDIUM",
+      "nist_level": null,
+      "timeline": "Migrate immediately"
+    },
+    {
+      "classical": "3DES",
+      "category": "symmetric",
+      "severity": "HIGH",
+      "quantum_threat": "Grover acceleration reduces security",
+      "pqc_replacement": "AES-256",
+      "hybrid_option": null,
+      "effort": "MEDIUM",
+      "nist_level": null,
+      "timeline": "Migrate within 1 year"
+    }
+  ]
+}

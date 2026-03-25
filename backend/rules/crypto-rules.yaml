@@ -1,0 +1,152 @@
+rules:
+  - id: java-rsa-key-generation
+    patterns:
+      - pattern: KeyPairGenerator.getInstance("RSA")
+    message: "RSA key generation detected — vulnerable to Shor's algorithm on quantum computers"
+    languages: [java]
+    severity: ERROR
+    metadata:
+      category: crypto
+      algorithm: RSA
+      quantum_vulnerable: true
+      pqc_replacement: ML-KEM (Kyber)
+      cwe: "CWE-327"
+
+  - id: java-ecc-key-generation
+    patterns:
+      - pattern: KeyPairGenerator.getInstance("EC")
+    message: "Elliptic Curve Cryptography detected — vulnerable to Shor's algorithm"
+    languages: [java]
+    severity: ERROR
+    metadata:
+      category: crypto
+      algorithm: ECC
+      quantum_vulnerable: true
+      pqc_replacement: ML-KEM (Kyber) + ML-DSA (Dilithium)
+      cwe: "CWE-327"
+
+  - id: java-aes-usage
+    patterns:
+      - pattern: Cipher.getInstance("AES/...")
+    message: "AES encryption detected — consider AES-256 for Grover's algorithm resistance"
+    languages: [java]
+    severity: WARNING
+    metadata:
+      category: crypto
+      algorithm: AES
+      quantum_vulnerable: partial
+      pqc_replacement: AES-256
+      cwe: "CWE-327"
+
+  - id: java-des-usage
+    patterns:
+      - pattern: Cipher.getInstance("DES/...")
+    message: "DES encryption detected — weak algorithm, vulnerable to both classical and quantum attacks"
+    languages: [java]
+    severity: ERROR
+    metadata:
+      category: crypto
+      algorithm: DES
+      quantum_vulnerable: true
+      pqc_replacement: AES-256
+      cwe: "CWE-327"
+
+  - id: java-md5-hash
+    patterns:
+      - pattern: MessageDigest.getInstance("MD5")
+    message: "MD5 hashing detected — cryptographically broken"
+    languages: [java]
+    severity: ERROR
+    metadata:
+      category: hash
+      algorithm: MD5
+      quantum_vulnerable: true
+      pqc_replacement: SHA-3
+      cwe: "CWE-328"
+
+  - id: java-sha1-hash
+    patterns:
+      - pattern: MessageDigest.getInstance("SHA-1")
+    message: "SHA-1 hashing detected — deprecated, collision attacks known"
+    languages: [java]
+    severity: ERROR
+    metadata:
+      category: hash
+      algorithm: SHA-1
+      quantum_vulnerable: true
+      pqc_replacement: SHA-3 or SHA-384
+      cwe: "CWE-328"
+
+  - id: java-sha256-hash
+    patterns:
+      - pattern: MessageDigest.getInstance("SHA-256")
+    message: "SHA-256 hashing detected — track for quantum inventory (Grover's halves security)"
+    languages: [java]
+    severity: INFO
+    metadata:
+      category: hash
+      algorithm: SHA-256
+      quantum_vulnerable: partial
+      pqc_replacement: SHA-384 or SHA-3
+      cwe: "CWE-327"
+
+  - id: java-rsa-cipher
+    patterns:
+      - pattern: Cipher.getInstance("RSA/...")
+    message: "RSA encryption/decryption detected — vulnerable to quantum attacks"
+    languages: [java]
+    severity: ERROR
+    metadata:
+      category: crypto
+      algorithm: RSA
+      quantum_vulnerable: true
+      pqc_replacement: ML-KEM (Kyber)
+      cwe: "CWE-327"
+
+  - id: python-rsa-usage
+    patterns:
+      - pattern: RSA.generate(...)
+    message: "RSA key generation detected — vulnerable to quantum attacks"
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: crypto
+      algorithm: RSA
+      quantum_vulnerable: true
+      pqc_replacement: ML-KEM (Kyber)
+
+  - id: python-ecc-usage
+    patterns:
+      - pattern: ECC.generate(...)
+    message: "ECC key generation detected — vulnerable to quantum attacks"
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: crypto
+      algorithm: ECC
+      quantum_vulnerable: true
+      pqc_replacement: ML-DSA (Dilithium)
+
+  - id: python-hashlib-md5
+    patterns:
+      - pattern: hashlib.md5(...)
+    message: "MD5 usage detected — cryptographically broken"
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: hash
+      algorithm: MD5
+      quantum_vulnerable: true
+      pqc_replacement: SHA-3
+
+  - id: python-hashlib-sha1
+    patterns:
+      - pattern: hashlib.sha1(...)
+    message: "SHA-1 usage detected — deprecated"
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: hash
+      algorithm: SHA-1
+      quantum_vulnerable: true
+      pqc_replacement: SHA-3
