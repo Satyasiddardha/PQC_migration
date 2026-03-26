@@ -52,4 +52,10 @@ export const api = {
   generateCBOM: () => fetchApi('/cbom/generate', { method: 'POST' }),
   getCBOMJson: () => fetchApi('/cbom/json'),
   getCBOMMarkdown: () => fetchApi('/cbom/markdown'),
+
+  // Intelligence Engine
+  generateIntelligenceRecommendations: (assets) => fetchApi('/intelligence/recommendations', {
+    method: 'POST',
+    body: JSON.stringify({ assets })
+  }),
 };

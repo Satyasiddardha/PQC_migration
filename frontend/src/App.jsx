@@ -9,12 +9,14 @@ import TestingView from './components/TestingView'
 import MigrationView from './components/MigrationView'
 import MonitoringView from './components/MonitoringView'
 import CBOMView from './components/CBOMView'
+import IntelligenceView from './components/IntelligenceView'
 import { api } from './utils/api'
 
 const VIEWS = {
   dashboard: { label: 'Dashboard', icon: '📊' },
   discovery: { label: 'Discovery', icon: '🔍' },
   risk: { label: 'Risk Assessment', icon: '⚠️' },
+  intelligence: { label: 'NIST Intelligence', icon: '🧠' },
   evaluation: { label: 'PQC Evaluation', icon: '🔬' },
   testing: { label: 'Testing', icon: '🧪' },
   migration: { label: 'Migration', icon: '🔄' },
@@ -88,6 +90,7 @@ export default function App() {
       case 'dashboard': return <Dashboard {...props} runFullPipeline={runFullPipeline} loading={loading} getStageStatus={getStageStatus} runningStage={runningStage} />
       case 'discovery': return <DiscoveryView data={pipelineData.discovery} updateStageData={updateStageData} />
       case 'risk': return <RiskView data={pipelineData.risk} updateStageData={updateStageData} />
+      case 'intelligence': return <IntelligenceView data={pipelineData.discovery} />
       case 'evaluation': return <EvaluationView data={pipelineData.evaluation} updateStageData={updateStageData} />
       case 'testing': return <TestingView data={pipelineData.testing} updateStageData={updateStageData} />
       case 'migration': return <MigrationView data={pipelineData.migration} updateStageData={updateStageData} />
