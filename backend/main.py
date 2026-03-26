@@ -6,7 +6,7 @@ Main entry point orchestrating all pipeline stages.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import discovery, risk, evaluation, testing, migration, monitoring, cbom
+from routers import discovery, risk, evaluation, testing, migration, monitoring, cbom, intelligence
 
 app = FastAPI(
     title="PQC Migration Tool",
@@ -31,7 +31,7 @@ app.include_router(testing.router, prefix="/api/testing", tags=["Testing & Bench
 app.include_router(migration.router, prefix="/api/migration", tags=["Migration"])
 app.include_router(monitoring.router, prefix="/api/monitoring", tags=["Monitoring"])
 app.include_router(cbom.router, prefix="/api/cbom", tags=["CBOM"])
-
+app.include_router(intelligence.router, prefix="/api/intelligence", tags=["PQC Intelligence Layer"])
 # In-memory store for pipeline state
 pipeline_state = {
     "discovery": None,
