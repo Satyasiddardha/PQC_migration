@@ -3,9 +3,16 @@ const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 export async function fetchApi(endpoint, options = {}) {
   const url = `${API_BASE}${endpoint}`;
   try {
+    const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+    
+    // If sending FormData (like a file upload), the browser must automatically set the Content-Type boundary
+    if (options.body instanceof FormData) {
+      delete headers['Content-Type'];
+    }
+
     const response = await fetch(url, {
-      headers: { 'Content-Type': 'application/json' },
       ...options,
+      headers
     });
     if (!response.ok) throw new Error(`API error: ${response.status}`);
     const contentType = response.headers.get('content-type');
@@ -20,6 +27,11 @@ export async function fetchApi(endpoint, options = {}) {
 export const api = {
   // Pipeline
   runFullPipeline: (path) => fetchApi(`/pipeline/run-all?target_path=${encodeURIComponent(path || '../../src')}`, { method: 'POST' }),
+  runPipelineUpload: (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return fetchApi('/pipeline/upload-zip', { method: 'POST', body: formData });
+  },
   getPipelineStatus: () => fetchApi('/pipeline/status'),
 
   // Discovery

@@ -78,6 +78,39 @@ export default function App() {
     setRunningStage(null)
   }
 
+  const runUploadPipeline = async (file) => {
+    setLoading(true)
+    try {
+      setRunningStage('discovery') // Fake the visual progression while the backend processes the zip synchronously
+      await api.runPipelineUpload(file)
+      
+      // The backend global state is now populated. Fetch the distinct results.
+      updateStageData('discovery', await api.getDiscoveryResults())
+      setRunningStage('risk')
+      
+      updateStageData('risk', await api.getRiskResults())
+      setRunningStage('evaluation')
+      
+      updateStageData('evaluation', await api.getEvaluationResults())
+      setRunningStage('testing')
+      
+      updateStageData('testing', await api.getTestingResults())
+      setRunningStage('migration')
+      
+      updateStageData('migration', await api.getMigrationResults())
+      setRunningStage('monitoring')
+      
+      updateStageData('monitoring', await api.getMonitoringReport())
+      setRunningStage('cbom')
+      
+      updateStageData('cbom', await api.getCBOMJson())
+    } catch (err) {
+      console.error('Upload pipeline error:', err)
+    }
+    setLoading(false)
+    setRunningStage(null)
+  }
+
   const getStageStatus = (stage) => {
     if (runningStage === stage) return 'running'
     if (pipelineData[stage]) return 'completed'
@@ -87,7 +120,7 @@ export default function App() {
   const renderView = () => {
     const props = { data: pipelineData, updateStageData, setActiveView }
     switch (activeView) {
-      case 'dashboard': return <Dashboard {...props} runFullPipeline={runFullPipeline} loading={loading} getStageStatus={getStageStatus} runningStage={runningStage} />
+      case 'dashboard': return <Dashboard {...props} runFullPipeline={runFullPipeline} runUploadPipeline={runUploadPipeline} loading={loading} getStageStatus={getStageStatus} runningStage={runningStage} />
       case 'discovery': return <DiscoveryView data={pipelineData.discovery} updateStageData={updateStageData} />
       case 'risk': return <RiskView data={pipelineData.risk} updateStageData={updateStageData} />
       case 'intelligence': return <IntelligenceView data={pipelineData.discovery} />

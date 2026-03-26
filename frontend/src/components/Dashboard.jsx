@@ -10,7 +10,7 @@ const STAGES = [
   { key: 'cbom', icon: '📋', label: 'CBOM', tool: 'Generator' },
 ]
 
-export default function Dashboard({ data, runFullPipeline, loading, getStageStatus, runningStage, setActiveView }) {
+export default function Dashboard({ data, runFullPipeline, runUploadPipeline, loading, getStageStatus, runningStage, setActiveView }) {
   const cbom = data.cbom
   const summary = cbom?.summary || {}
   const discovery = data.discovery
@@ -28,9 +28,17 @@ export default function Dashboard({ data, runFullPipeline, loading, getStageStat
           <h1 className="section-title">PQC Migration Pipeline</h1>
           <p className="section-description">End-to-end post-quantum cryptography migration workflow</p>
         </div>
-        <button className="btn btn-primary" onClick={runFullPipeline} disabled={loading}>
-          {loading ? '⏳ Running Pipeline...' : '▶ Run Full Pipeline'}
-        </button>
+        <div style={{ display: 'flex', gap: '15px' }}>
+          <label className="btn" style={{ cursor: loading ? 'not-allowed' : 'pointer', border: '1px solid #4ade80', color: '#4ade80', backgroundColor: 'transparent', padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold' }}>
+            <input type="file" accept=".zip" style={{ display: 'none' }} disabled={loading} onChange={(e) => {
+              if (e.target.files && e.target.files[0]) runUploadPipeline(e.target.files[0]);
+            }} />
+            {loading ? '⏳ Processing...' : '📁 Upload Code (.zip)'}
+          </label>
+          <button className="btn btn-primary" onClick={runFullPipeline} disabled={loading}>
+            {loading ? '⏳ Running Pipeline...' : '▶ Run Server Code'}
+          </button>
+        </div>
       </div>
 
       <div className="pipeline-container">
@@ -181,9 +189,17 @@ export default function Dashboard({ data, runFullPipeline, loading, getStageStat
           <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
             Click "Run Full Pipeline" to scan your codebase for quantum-vulnerable cryptography
           </p>
-          <button className="btn btn-primary" onClick={runFullPipeline}>
-            ▶ Start PQC Analysis
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+            <label className="btn" style={{ cursor: loading ? 'not-allowed' : 'pointer', border: '2px dashed #4ade80', color: '#4ade80', backgroundColor: 'transparent', padding: '10px 30px', borderRadius: '8px', fontSize: '1.1rem', fontWeight: 'bold' }}>
+              <input type="file" accept=".zip" style={{ display: 'none' }} disabled={loading} onChange={(e) => {
+                if (e.target.files && e.target.files[0]) runUploadPipeline(e.target.files[0]);
+              }} />
+              📁 Upload .zip
+            </label>
+            <button className="btn btn-primary" onClick={runFullPipeline} disabled={loading} style={{ padding: '10px 30px', fontSize: '1.1rem' }}>
+              ▶ Scan Server Code
+            </button>
+          </div>
         </div>
       )}
 

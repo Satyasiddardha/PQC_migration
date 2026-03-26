@@ -3,7 +3,11 @@ PQC Migration Tool — FastAPI Backend
 Main entry point orchestrating all pipeline stages.
 """
 
-from fastapi import FastAPI
+import os
+import shutil
+import tempfile
+import zipfile
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from routers import discovery, risk, evaluation, testing, migration, monitoring, cbom, intelligence
@@ -125,6 +129,29 @@ async def run_full_pipeline(target_path: str = "../../src"):
         "stages_completed": 7,
         "summary": cbom_result.get("summary", {}),
     }
+
+
+@app.post("/api/pipeline/upload-zip")
+async def run_pipeline_on_zip(file: UploadFile = File(...)):
+    """Extract an uploaded zip and run the full pipeline on its contents."""
+    if not file.filename.endswith('.zip'):
+        raise HTTPException(status_code=400, detail="Only .zip files are supported")
+        
+    temp_dir = tempfile.mkdtemp(prefix="pqc_")
+    try:
+        zip_path = os.path.join(temp_dir, file.filename)
+        with open(zip_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+            
+        extract_path = os.path.join(temp_dir, "extracted")
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(extract_path)
+            
+        return await run_full_pipeline(target_path=extract_path)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to process zip: {str(e)}")
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
 
 
 if __name__ == "__main__":
