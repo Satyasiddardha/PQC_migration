@@ -8,7 +8,8 @@ router = APIRouter()
 @router.post("/scan-tls")
 async def scan_tls(hostname: str = "example.com", port: int = 443):
     """Scan a TLS endpoint using SSLyze."""
-    result = sslyze_scanner.scan_tls_endpoint(hostname, port)
+    clean_host = hostname.replace("https://", "").replace("http://", "").split("/")[0]
+    result = sslyze_scanner.scan_tls_endpoint(clean_host, port)
     return result
 
 
@@ -25,8 +26,10 @@ async def analyze_risk(hostname: str = "example.com"):
     from main import get_pipeline_state
     state = get_pipeline_state()
     
+    clean_host = hostname.replace("https://", "").replace("http://", "").split("/")[0]
+    
     discovery = state.get("discovery", {})
-    tls_result = sslyze_scanner.get_demo_tls_result(hostname, 443)
+    tls_result = sslyze_scanner.get_demo_tls_result(clean_host, 443)
     cve_result = cve_scanner.get_curated_cve_results()
     
     risk_result = cve_scanner.analyze_risk(
