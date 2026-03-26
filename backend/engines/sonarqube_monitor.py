@@ -16,7 +16,8 @@ AUTH = ("admin", "Cys@2206392638843")
 async def check_connection() -> dict:
     """Check if SonarQube is accessible."""
     try:
-        async with httpx.AsyncClient(timeout=10, auth=AUTH) as client:
+        headers = {"Bypass-Tunnel-Reminder": "true"}
+        async with httpx.AsyncClient(timeout=10, auth=AUTH, headers=headers) as client:
             resp = await client.get(f"{SONARQUBE_URL}/api/system/status")
             data = resp.json()
             return {
@@ -36,7 +37,8 @@ async def check_connection() -> dict:
 async def get_project_issues(project_key: str = DEFAULT_PROJECT_KEY) -> dict:
     """Fetch project issues from SonarQube."""
     try:
-        async with httpx.AsyncClient(timeout=15, auth=AUTH) as client:
+        headers = {"Bypass-Tunnel-Reminder": "true"}
+        async with httpx.AsyncClient(timeout=15, auth=AUTH, headers=headers) as client:
             # Get issues
             resp = await client.get(
                 f"{SONARQUBE_URL}/api/issues/search",
@@ -104,7 +106,8 @@ async def get_project_issues(project_key: str = DEFAULT_PROJECT_KEY) -> dict:
 async def get_quality_gate(project_key: str = DEFAULT_PROJECT_KEY) -> dict:
     """Get quality gate status for the project."""
     try:
-        async with httpx.AsyncClient(timeout=10, auth=AUTH) as client:
+        headers = {"Bypass-Tunnel-Reminder": "true"}
+        async with httpx.AsyncClient(timeout=10, auth=AUTH, headers=headers) as client:
             resp = await client.get(
                 f"{SONARQUBE_URL}/api/qualitygates/project_status",
                 params={"projectKey": project_key},
@@ -131,7 +134,8 @@ async def get_project_measures(project_key: str = DEFAULT_PROJECT_KEY) -> dict:
     ]
     
     try:
-        async with httpx.AsyncClient(timeout=10, auth=AUTH) as client:
+        headers = {"Bypass-Tunnel-Reminder": "true"}
+        async with httpx.AsyncClient(timeout=10, auth=AUTH, headers=headers) as client:
             resp = await client.get(
                 f"{SONARQUBE_URL}/api/measures/component",
                 params={
@@ -161,7 +165,8 @@ async def get_project_measures(project_key: str = DEFAULT_PROJECT_KEY) -> dict:
 async def get_scan_history(project_key: str = DEFAULT_PROJECT_KEY) -> dict:
     """Get project analysis history."""
     try:
-        async with httpx.AsyncClient(timeout=10, auth=AUTH) as client:
+        headers = {"Bypass-Tunnel-Reminder": "true"}
+        async with httpx.AsyncClient(timeout=10, auth=AUTH, headers=headers) as client:
             resp = await client.get(
                 f"{SONARQUBE_URL}/api/project_analyses/search",
                 params={"project": project_key, "ps": 20},
