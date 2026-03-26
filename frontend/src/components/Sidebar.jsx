@@ -2,6 +2,7 @@ export default function Sidebar({ activeView, setActiveView, views, pipelineData
   const stages = [
     { key: 'discovery', icon: '🔍', label: 'Discovery' },
     { key: 'risk', icon: '⚠️', label: 'Risk Assessment' },
+    { key: 'intelligence', icon: '🧠', label: 'NIST Intelligence' },
     { key: 'evaluation', icon: '🔬', label: 'PQC Evaluation' },
     { key: 'testing', icon: '🧪', label: 'Testing' },
     { key: 'migration', icon: '🔄', label: 'Migration' },
