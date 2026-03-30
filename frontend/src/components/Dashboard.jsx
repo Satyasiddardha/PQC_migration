@@ -31,7 +31,10 @@ export default function Dashboard({ data, runFullPipeline, runUploadPipeline, lo
         <div style={{ display: 'flex', gap: '15px' }}>
           <label className="btn" style={{ cursor: loading ? 'not-allowed' : 'pointer', border: '1px solid #4ade80', color: '#4ade80', backgroundColor: 'transparent', padding: '10px 20px', borderRadius: '8px', fontWeight: 'bold' }}>
             <input type="file" accept=".zip" style={{ display: 'none' }} disabled={loading} onChange={(e) => {
-              if (e.target.files && e.target.files[0]) runUploadPipeline(e.target.files[0]);
+              if (e.target.files && e.target.files[0]) {
+                runUploadPipeline(e.target.files[0]);
+              }
+              e.target.value = null;
             }} />
             {loading ? '⏳ Processing...' : '📁 Upload Code (.zip)'}
           </label>
@@ -192,7 +195,10 @@ export default function Dashboard({ data, runFullPipeline, runUploadPipeline, lo
           <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
             <label className="btn" style={{ cursor: loading ? 'not-allowed' : 'pointer', border: '2px dashed #4ade80', color: '#4ade80', backgroundColor: 'transparent', padding: '10px 30px', borderRadius: '8px', fontSize: '1.1rem', fontWeight: 'bold' }}>
               <input type="file" accept=".zip" style={{ display: 'none' }} disabled={loading} onChange={(e) => {
-                if (e.target.files && e.target.files[0]) runUploadPipeline(e.target.files[0]);
+                if (e.target.files && e.target.files[0]) {
+                  runUploadPipeline(e.target.files[0]);
+                }
+                e.target.value = null;
               }} />
               📁 Upload .zip
             </label>

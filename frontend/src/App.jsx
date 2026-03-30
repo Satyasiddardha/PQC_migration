@@ -106,6 +106,7 @@ export default function App() {
       updateStageData('cbom', await api.getCBOMJson())
     } catch (err) {
       console.error('Upload pipeline error:', err)
+      alert('Upload Error: ' + err.message)
     }
     setLoading(false)
     setRunningStage(null)
